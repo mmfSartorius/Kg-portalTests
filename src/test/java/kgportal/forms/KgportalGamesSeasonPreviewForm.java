@@ -11,6 +11,9 @@ public class KgportalGamesSeasonPreviewForm extends BaseForm {
         super(By.xpath("//span[contains(text(), 'Релизы игр на')]"), "Kg games season preview ru");
     }
 
+    /**
+     * Перейти в обсуждения
+     */
     public void moveToDiscussion() {
         lblAnyDiscussion.scrollWithOffset(0, -100);
         lblAnyDiscussion.clickAndWaitPage();

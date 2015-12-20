@@ -15,11 +15,20 @@ public class KgportalKgeneratorForm extends BaseForm {
         super(By.xpath("//h4[text() = \"КГенератор 9001\"]"), "KGenerator");
     }
 
+    /**
+     * Вставка ссылки в текстбокс
+     *
+     * @param link - ссылка картки
+     */
     public void insertImg(String link) {
         txbLink.setText(link);
         btnOk.clickAndWaitPage();
     }
 
+    /**
+     * Проверка что картинка вставилась
+     * @param link - ссылка картинки
+     */
     public void checkImage(String link) {
         lblImage = new Label(By.id("image_1"));
         Boolean boolContains = lblImage.getElement().getAttribute("style").contains(link);

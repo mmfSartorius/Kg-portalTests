@@ -16,6 +16,11 @@ public class KgportalGalleryForm extends BaseForm {
         super(By.xpath("//div[@itemtype = 'http://schema.org/Article']"), "Kg-portal ru Gallery ");
     }
 
+    /**
+     * Нажатие всех кнопок "Детали"
+     *
+     * @param numberOfElements - количество новостей на странице
+     */
     public void clickAllDetails(int numberOfElements) {
         newsList = BaseElement.findBaseElements("//div[@itemtype = 'http://schema.org/Article']"
                 , "//a[text() = \"Подробности\"]", numberOfElements, "//a[@class = 'news_head']//span");
@@ -25,6 +30,10 @@ public class KgportalGalleryForm extends BaseForm {
         }
     }
 
+    /**
+     * Проверка наличия картинки
+     * @param numberOfElements - количество новостей на странице
+     */
     public void checkImages(int numberOfElements) {
         int contains = 0;
         newsList = BaseElement.findBaseElements("//div[@itemtype = 'http://schema.org/Article']"

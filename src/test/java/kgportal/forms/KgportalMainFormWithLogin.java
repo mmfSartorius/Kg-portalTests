@@ -12,6 +12,9 @@ public class KgportalMainFormWithLogin extends BaseForm {
         super(By.xpath(String.format("//div[@class = 'header' and contains(text(), '%s')]", login)), "Kg-portal ru");
     }
 
+    /**
+     * Перейти на страницу Кгенератора
+     */
     public void enterKgenerator() {
         lblKgenerator.clickAndWaitPage();
     }

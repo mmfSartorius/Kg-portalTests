@@ -21,6 +21,13 @@ public class KgportalMainForm extends BaseForm {
         super(By.id("alltabs"), "Kg-portal ru");
     }
 
+    /**
+     * Навестись на меню и выбрать элемент подменю
+     *
+     * @param linkMenu    - href меню
+     * @param linkSubMenu - часть href подменю
+     * @return Склееный href
+     */
     public String moveMenuClickSubMenu(String linkMenu, String linkSubMenu) {
         lblMenu = new Label(By.className(linkMenu), linkMenu);
 
@@ -39,6 +46,11 @@ public class KgportalMainForm extends BaseForm {
         return baseLink;
     }
 
+    /**
+     * Навестись на второе меню и выбрать элемент подменю
+     * @param linkMenu - href меню
+     * @param linkSubMenu - часть href подменю
+     */
     public void moveSecondMenuClickSubMenu(String linkMenu, String linkSubMenu) {
         lblMenu = new Label(By.xpath(String.format("//div[@id = 'tabs']//a[@href = '%s/']", linkMenu)), linkMenu);
         lblSubMenu = new Label(By.xpath(String.format("//a[@href = '%s%s']", linkMenu, linkSubMenu)), linkSubMenu);
@@ -46,12 +58,21 @@ public class KgportalMainForm extends BaseForm {
         lblSubMenu.clickAndWaitPage();
     }
 
+    /**
+     * Залогиниться
+     * @param login
+     * @param password
+     */
     public void login(String login, String password) {
         txbLogin.setText(login);
         txbPassword.setText(password);
         enter.clickAndWaitPage();
     }
 
+    /**
+     * Проверка удачного логина
+     * @param login
+     */
     public void checkLogin(String login) {
         lblLogin = new Label(By.xpath(String.format("//div[@class = 'header' and contains(text(), '%s')]", login)));
         if (lblLogin.isPresent()) {
@@ -61,12 +82,21 @@ public class KgportalMainForm extends BaseForm {
         }
     }
 
+    /**
+     * Выбор сортировки в шапке топ новостей
+     * @param linkMenu
+     */
     public void chooseTopNewsFromHeader(String linkMenu) {
         btnTopNews = new Button(By.xpath(String.format("//span[@id = 'topnews_header_%s']", linkMenu)), linkMenu);
         btnTopNews.scrollWithOffset(0, -100);
         btnTopNews.click();
     }
 
+    /**
+     * Выбор топовой новости
+     * @param itemNumber - номер в списке
+     * @return название новости
+     */
     public String clickTopNews(int itemNumber) {
         btnAnyTopNews = new Button(By.xpath(String.format("//div[@id = 'topnews_list_tv']//li[%s]//a", itemNumber)));
         btnAnyTopNews.setName(btnAnyTopNews.getText());

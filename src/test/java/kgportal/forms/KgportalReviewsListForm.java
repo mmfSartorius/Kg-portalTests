@@ -14,6 +14,12 @@ public class KgportalReviewsListForm extends BaseForm {
         this.baseLink = subLink;
     }
 
+    /**
+     * Нажатие кнопки фильтра рецензий
+     *
+     * @param link - href кнопки
+     * @return склееный href
+     */
     public String selectButton(String link) {
         combinedLink = String.format("%s%s", baseLink, link);
         btnFilter = new Button(By.xpath(String.format("//a[@href = '%s']", combinedLink)), combinedLink);

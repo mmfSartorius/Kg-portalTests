@@ -19,6 +19,11 @@ public class KgportalNewReviewForm extends BaseForm {
         super(By.xpath(String.format("//a[@class = 'active' and @href = '%s']", baseLink)), "Kg popular reviews");
     }
 
+    /**
+     * Проверка отсортированности дат
+     *
+     * @param numberOfElements - количество рецензий на странице
+     */
     public void checkDates(int numberOfElements) {
         reviewsList = BaseElement.findBaseElements("//div[@id = 'listing_item_']", "//div[@class = 'output']", numberOfElements, "//u[@class = 'nobr']");
         Date[] dates = new Date[reviewsList.size()];

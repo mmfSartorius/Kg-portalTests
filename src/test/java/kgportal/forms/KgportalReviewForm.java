@@ -13,6 +13,12 @@ public class KgportalReviewForm extends BaseForm {
         super(By.xpath("//div[@id = 'movies_hd']"), formTitle);
     }
 
+    /**
+     * Проверка наличия награды
+     *
+     * @param award - src награды
+     * @return
+     */
     public boolean checkAward(String award) {
         String xpath = "//img[@src = '%s']";
         switch (award) {

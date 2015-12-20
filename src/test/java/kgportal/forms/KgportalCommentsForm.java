@@ -29,6 +29,9 @@ public class KgportalCommentsForm extends BaseForm {
         txbComment.setText(text);
     }
 
+    /**
+     * Нажатие кнопки предпросмотра
+     */
     public void clickPreview() {
         btnPreview.click();
         lblPreviewComment.waitForIsElementPresent();
@@ -46,12 +49,21 @@ public class KgportalCommentsForm extends BaseForm {
         doAssert(lblText.isPresent(), "Text matches", "Text does not match");
     }
 
+    /**
+     * Выбор сортировки комментариев
+     *
+     * @param filter - Имя фильтра
+     */
     public void clickFilter(String filter) {
         btnFilter = new Button(By.xpath(String.format("//a[text() = '%s']", filter)), filter);
         btnFilter.scrollWithOffset(0, -100);
         btnFilter.clickAndWaitPage();
     }
 
+    /**
+     * Проверка сортировки по положительным оценкам
+     * @param numberOfElements - количество комментариев на странице
+     */
     public void checkPositivePopularity(int numberOfElements) {
         newsList = BaseElement.findBaseElements("//li[contains(@id, 'comment')]", "//span[contains(@id, 'karma')]"
                 , numberOfElements, "//a[contains(@class, 'user_name')]");
@@ -85,6 +97,10 @@ public class KgportalCommentsForm extends BaseForm {
         doAssert(complies, "All karma matched", "Some karma does not matched");
     }
 
+    /**
+     * Проверка всех страниц с сортировкой по положительным оценкам
+     * @param numberOfElements
+     */
     public void checkOnAllPagesPositivePopularity(int numberOfElements) {
         checkPositivePopularity(numberOfElements);
         while (btnNextPage.isPresent()) {

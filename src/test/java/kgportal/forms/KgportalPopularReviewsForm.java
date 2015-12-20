@@ -15,6 +15,11 @@ public class KgportalPopularReviewsForm extends BaseForm {
         super(By.xpath(String.format("//a[@class = 'active' and @href = '%s']", baseLink)), "Kg popular reviews");
     }
 
+    /**
+     * Проверка сортировки по популярности
+     *
+     * @param numberOfElements - количество рецензий на странице
+     */
     public void checkPopularity(int numberOfElements) {
         reviewsList = BaseElement.findBaseElements("//div[@id = 'listing_item_']"
                 , "//u[contains(text(), \"просмотр\")]", numberOfElements, "//u[@class = 'nobr']");
