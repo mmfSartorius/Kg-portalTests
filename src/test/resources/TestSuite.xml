@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<suite name="Kg-portal Tests" verbose="1">
+
+    <test name="Kg-portal Review Awards Test" preserve-order="true">
+        <classes>
+            <class name="kgportal.tests.ParamReviewsAwardsTest"/>
+        </classes>
+        <parameter name="numberOfElements" value="30"/>
+    </test>
+    <test name="Kg-portal Review Populars Test" preserve-order="true">
+        <classes>
+            <class name="kgportal.tests.ParamReviewsPopularsTest"/>
+        </classes>
+        <parameter name="numberOfElements" value="30"/>
+    </test>
+    <test name="Kg-portal Kgenerator Test" preserve-order="true">
+        <classes>
+            <class name="kgportal.tests.ParamKgeneratorTest"/>
+        </classes>
+        <parameter name="login" value="Кто-то"/>
+        <parameter name="password" value="ghjuhfvvf"/>
+        <parameter name="image" value="http://www.radionetplus.ru/uploads/posts/2013-05/1369460629_panda-1.jpeg"/>
+    </test>
+    <test name="Kg-portal Comment Preview Test" preserve-order="true">
+        <classes>
+            <class name="kgportal.tests.ParamComentPreviewTest"/>
+        </classes>
+        <parameter name="login" value="Кто-то"/>
+        <parameter name="password" value="ghjuhfvvf"/>
+        <parameter name="text" value="Some text"/>
+    </test>
+    <test name="Kg-portal Games Gallery Test" preserve-order="true">
+        <classes>
+            <class name="kgportal.tests.ParamGamesGalleryTest"/>
+        </classes>
+        <parameter name="numberOfElements" value="20"/>
+    </test>
+    <test name="Kg-portal Comment Popular Test" preserve-order="true">
+        <classes>
+            <class name="kgportal.tests.ParamCommentsPopularTest"/>
+        </classes>
+        <parameter name="numberOfElements" value="25"/>
+    </test>
+    <test name="Kg-portal Review New Test" preserve-order="true">
+        <classes>
+            <class name="kgportal.tests.ParamReviewsNewTest"/>
+        </classes>
+        <parameter name="numberOfElements" value="30"/>
+    </test>
+</suite>

@@ -1,0 +1,353 @@
+package webdriver.elements;
+
+import org.junit.Assert;
+import org.openqa.selenium.*;
+import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.remote.RemoteWebElement;
+import org.openqa.selenium.support.ui.ExpectedCondition;
+import org.openqa.selenium.support.ui.WebDriverWait;
+import webdriver.BaseEntity;
+import webdriver.Browser;
+import webdriver.Logger;
+
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
+
+/**
+ * Abstract class, describing base element.
+ */
+public abstract class BaseElement extends BaseEntity {
+
+    private static final String LINK = "link=";
+
+    private static final String ID = "id=";
+    private static final String CSS = "css=";
+    private static final int TIMEOUT_WAIT_0 = 0;
+
+
+    /**
+     * @uml.property name="name"
+     */
+    protected String name;
+    /**
+     * @uml.property name="locator"
+     * @uml.associationEnd multiplicity="(1 1)"
+     */
+    protected By locator;
+    /**
+     * @uml.property name="element"
+     * @uml.associationEnd
+     */
+    protected RemoteWebElement element;
+
+    /**
+     * @uml.property name="element"
+     * @uml.associationEnd
+     */
+    protected String id;
+
+    /**
+     * The simple constructor, name will be extracted
+     *
+     * @param loc By Locator
+     */
+    protected BaseElement(final By loc) {
+        locator = loc;
+    }
+
+    /**
+     * The main constructor
+     *
+     * @param loc    By Locator
+     * @param nameOf Output in logs
+     */
+    protected BaseElement(final By loc, final String nameOf) {
+        locator = loc;
+        name = nameOf;
+    }
+
+    /**
+     * easy adapting from Selenium RC locators. CSS, ID, LINK
+     *
+     * @param stringLocator String locator
+     * @param nameOfElement Name
+     */
+    protected BaseElement(String stringLocator, final String nameOfElement) {
+        String clearLoc = null;
+        if (stringLocator.contains(CSS)) {
+            clearLoc = stringLocator.replaceFirst(CSS, "");
+            locator = By.cssSelector(clearLoc);
+            name = nameOfElement;
+        } else if (stringLocator.contains(ID)) {
+            clearLoc = stringLocator.replaceFirst(ID, "");
+            locator = By.id(clearLoc);
+            name = nameOfElement;
+        } else if (stringLocator.contains(LINK)) {
+            clearLoc = stringLocator.replaceFirst(LINK, "");
+            locator = By.linkText(clearLoc);
+            name = nameOfElement;
+        } else {
+            logger.fatal("UNKNOWN LOCATOR's TYPE. Change to 'By'");
+        }
+    }
+
+    public static List<Label> findBaseElements(String listingItemXpath, String subListingElementXpath, int numberOfElements, String subListingElementForNameXpath) {
+        List<Label> baseElementList = new ArrayList<>();
+        for (int i = 1; i <= numberOfElements; i++) {
+            Label elementWithText = new Label(By.xpath(String.format("%1$s[%2$s]%3$s", listingItemXpath, i, subListingElementForNameXpath)), "Label for name");
+            String name;
+            if (elementWithText.isPresent()) {
+                name = elementWithText.getText();
+            } else {
+                name = "Item " + Integer.toString(i);
+            }
+            Label temp = new Label(By.xpath(String.format("%1$s[%2$s]%3$s", listingItemXpath, i, subListingElementXpath))
+                    , name);
+            if (temp.isPresent()) {
+                baseElementList.add(temp);
+            }
+        }
+        return baseElementList;
+    }
+
+    public static List<Label> findBaseElements(String listingItemXpath, String subListingElementXpath, int numberOfElements) {
+        List<Label> baseElementList = new ArrayList<>();
+        for (int i = 1; i <= numberOfElements; i++) {
+            Label temp = new Label(By.xpath(String.format("%1$s[%2$s]%3$s", listingItemXpath, numberOfElements, subListingElementXpath))
+                    , "Item " + Integer.toString(i));
+            if (temp.isPresent()) {
+                baseElementList.add(temp);
+            }
+        }
+        return baseElementList;
+    }
+
+
+    /**
+     * using different locators for different stages DON'T FORGET TO INIT {@link BaseEntity#stageController}
+     * @param locatorStageA First locator
+     * @param locatorStageB Second locator
+     * @param nameOfElement Name
+     */
+
+    /**
+     * @return RemoteWebElement
+     * @uml.property name="element"
+     */
+    public RemoteWebElement getElement() {
+        waitForIsElementPresent();
+        return element;
+    }
+
+    /**
+     * @param elementToSet RemoteWebElement
+     * @uml.property name="element"
+     */
+    public void setElement(final RemoteWebElement elementToSet) {
+        element = elementToSet;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    /**
+     * @return Locator
+     * @uml.property name="locator"
+     */
+    public By getLocator() {
+        return locator;
+    }
+
+    /**
+     * The implementation of an abstract method for logging of BaseEntity
+     *
+     * @param message Message to display in the log
+     * @return Formatted message (containing the name and type of item)
+     */
+    protected String formatLogMsg(final String message) {
+        return String.format("%1$s '%2$s' %3$s %4$s", getElementType(), name, Logger.LOG_DELIMITER, message);
+    }
+
+    /**
+     * The method returns the element type (used for logging)
+     *
+     * @return Type of element
+     * @uml.property name="elementType"
+     */
+    protected abstract String getElementType();
+
+    /**
+     * Send keys.
+     */
+    public void sendKeys(Keys key) {
+        waitForIsElementPresent();
+        browser.getDriver().findElement(locator).sendKeys(key);
+    }
+
+    /**
+     * Wait for element is present.
+     */
+    public void waitForIsElementPresent() {
+
+        isPresent(Integer.valueOf(browser.getTimeoutForCondition()));
+        // troubleshooting if element is not found
+        if (!element.isDisplayed()) {//Browser.getTroubleShooting
+            performTroubleShooting();
+        }
+        Assert.assertTrue(formatLogMsg(getLoc("loc.is.absent")), element.isDisplayed());
+    }
+
+    /**
+     * Performing troubleshooting via changing active locator, output log and report.
+     */
+    private void performTroubleShooting() {
+        int length = decrementLocator(locator).toString().length();
+        try {
+            info("---------------- Troubleshooting starting --------------------");
+            for (int i = 0; i < length; i++) {
+                decrementLocator(locator);
+                Boolean result = isPresent(TIMEOUT_WAIT_0);
+                info("Re-try with locator: \t" + locator.toString() + String.format(new String(new char[i]).replace('\0', ' ') + " :%s", result ? "FOUND!" : "NOT FOUND"));
+                if (result) {
+                    break;
+                }
+            }
+        } catch (Exception e) {
+            warn(e.getMessage());
+        } finally {
+            info("---------------- Troubleshooting finished --------------------");
+        }
+    }
+
+    /**
+     * Decrement type of locator (troubleshooting).
+     *
+     * @param locator
+     * @return By
+     */
+    private By decrementLocator(By locator) {
+        for (Field field : locator.getClass().getDeclaredFields()) {
+            field.setAccessible(true);
+            try {
+                String strLocator = (String) field.get(locator);
+                field.set(locator, strLocator.substring(0, strLocator.length() - 1));
+            } catch (IllegalArgumentException e) {
+                warn(e.getMessage());
+            } catch (IllegalAccessException e) {
+                warn(e.getMessage());
+            }
+        }
+        return locator;
+    }
+
+    /**
+     * Click on the item.
+     */
+    public void click() {
+        waitForIsElementPresent();
+        info(getLoc("loc.clicking"));
+        browser.getDriver().getMouse().mouseMove(element.getCoordinates());
+        if (browser.getDriver() instanceof JavascriptExecutor) {
+            ((JavascriptExecutor) browser.getDriver()).executeScript("arguments[0].style.border='3px solid red'", element);
+        }
+        element.click();
+    }
+
+    public void clickAndWaitPage() {
+        click();
+        browser.waitForPageToLoad();
+    }
+
+    public void showSubElement(BaseElement subElement) {
+        Actions action = new Actions(browser.getDriver());
+        info(getLoc("moveToElement"));
+        long time = System.currentTimeMillis();
+        long currentTime;
+        do {
+            currentTime = System.currentTimeMillis();
+            action.moveToElement(this.getElement(), 1, 1).perform();
+            action.moveToElement(this.getElement(), this.getElement().getSize().getWidth() - 1, this.getElement().getSize().getHeight() - 1).perform();
+        }
+        while (!subElement.isPresentWithoutLog() && currentTime - time < 10000);
+        Assert.assertTrue(currentTime - time < 10000);
+    }
+
+    /**
+     * Get the item text (inner text).
+     *
+     * @return Text of element
+     */
+    public String getText() {
+        waitForIsElementPresent();
+        return element.getText();
+    }
+
+    public boolean isPresentWithoutLog() {
+        return isPresent(TIMEOUT_WAIT_0);
+    }
+
+    /**
+     * Check for is element present on the page.
+     *
+     * @return Is element present
+     */
+    public boolean isPresent() {
+        boolean isPresent = isPresent(TIMEOUT_WAIT_0);
+        info("is present : " + isPresent);
+        return isPresent;
+    }
+
+    /**
+     * Check for is element present on the page.
+     *
+     * @return Is element present
+     */
+    public boolean isPresent(int timeout) {
+
+        WebDriverWait wait = new WebDriverWait(Browser.getInstance().getDriver(), timeout);
+        browser.getDriver().manage().timeouts().implicitlyWait(TIMEOUT_WAIT_0, TimeUnit.SECONDS);
+        try {
+            wait.until((ExpectedCondition<Boolean>) new ExpectedCondition<Boolean>() {
+                public Boolean apply(final WebDriver driver) {
+                    try {
+                        List<WebElement> list = driver.findElements(locator);
+                        for (WebElement el : list) {
+                            if (el instanceof RemoteWebElement && el.isDisplayed()) {
+                                element = (RemoteWebElement) el;
+                                return element.isDisplayed();
+                            }
+                        }
+                        element = (RemoteWebElement) driver.findElement(locator);
+                    } catch (Exception e) {
+                        return false;
+                    }
+                    return element.isDisplayed();
+                }
+            });
+        } catch (Exception e) {
+            return false;
+        }
+        try {
+            browser.getDriver().manage().timeouts().implicitlyWait(Integer.valueOf(browser.getTimeoutForCondition()), TimeUnit.SECONDS);
+            return element.isDisplayed();
+        } catch (Exception e) {
+            warn(e.getMessage());
+        }
+        return false;
+    }
+
+    public void scrollWithOffset(int x, int y) {
+        String code = "window.scroll(" + (this.getElement().getLocation().x + x) + ","
+                + (element.getLocation().y + y) + ");";
+        info(code);
+        browser.getDriver().executeScript(code, element, x, y);
+    }
+}
+
