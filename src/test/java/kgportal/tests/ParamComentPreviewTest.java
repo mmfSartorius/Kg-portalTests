@@ -9,6 +9,9 @@ import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 import webdriver.BaseTest;
 
+/**
+ * Тест предпросмотра комментария
+ */
 public class ParamComentPreviewTest extends BaseTest {
     private String login;
     private String password;

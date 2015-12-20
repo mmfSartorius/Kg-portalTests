@@ -7,6 +7,9 @@ import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 import webdriver.BaseTest;
 
+/**
+ * Тест вставки картинки в КГенератор
+ */
 public class ParamKgeneratorTest extends BaseTest {
     private String login;
     private String password;

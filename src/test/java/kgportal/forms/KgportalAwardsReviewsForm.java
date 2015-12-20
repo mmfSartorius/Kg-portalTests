@@ -19,12 +19,22 @@ public class KgportalAwardsReviewsForm extends BaseForm {
         selectAward(award, nameOfAward);
     }
 
+    /**
+     * Выбор награды для сортировки
+     *
+     * @param award       - последняя часть локатора награды
+     * @param nameOfAward - имя награды
+     */
     public void selectAward(String award, String nameOfAward) {
         this.award = award;
         btnAward = new Button(By.xpath(String.format("//a[@href = '/reviews/movies/award/%s']", award)), nameOfAward);
         btnAward.clickAndWaitPage();
     }
 
+    /**
+     * Проверка чтобы все рецензии отображали выбранную награду
+     * @param numberOfElements - количество рецензий на странице
+     */
     public void checkAwards(int numberOfElements) {
         reviewsList = BaseElement.findBaseElements("//div[@id = 'listing_item_']", "//div[@class = 'img']", numberOfElements, "//u[@class = 'nobr']");
         int numberOfMatches = 0;

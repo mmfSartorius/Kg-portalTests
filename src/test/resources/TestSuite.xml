@@ -41,10 +41,10 @@
         </classes>
         <parameter name="numberOfElements" value="25"/>
     </test>
-    <test name="Kg-portal Review New Test" preserve-order="true">
-        <classes>
-            <class name="kgportal.tests.ParamReviewsNewTest"/>
-        </classes>
-        <parameter name="numberOfElements" value="30"/>
-    </test>
+    <!--<test name="Kg-portal Review New Test" preserve-order="true">-->
+    <!--<classes>-->
+    <!--<class name="kgportal.tests.ParamReviewsNewTest"/>-->
+    <!--</classes>-->
+    <!--<parameter name="numberOfElements" value="30"/>-->
+    <!--</test>-->
 </suite>

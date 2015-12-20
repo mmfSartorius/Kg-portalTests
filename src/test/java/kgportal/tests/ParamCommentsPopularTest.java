@@ -8,6 +8,9 @@ import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 import webdriver.BaseTest;
 
+/**
+ * Тест сортировки комментариев по популярности
+ */
 public class ParamCommentsPopularTest extends BaseTest {
     String name;
     int numberOfElements;

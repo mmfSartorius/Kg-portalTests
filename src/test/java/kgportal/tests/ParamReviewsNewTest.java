@@ -10,6 +10,9 @@ import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 import webdriver.BaseTest;
 
+/**
+ * Тест сортировки рецензий по дате
+ */
 public class ParamReviewsNewTest extends BaseTest {
     String subLink;
     String combinedLink;
@@ -37,6 +40,7 @@ public class ParamReviewsNewTest extends BaseTest {
 
         logStep();
         KgportalReviewsListForm kgportalReviewsForm = new KgportalReviewsListForm(subLink);
+
         combinedLink = kgportalReviewsForm.selectButton(KgReviewFilterButtonsHrefs.NEW);
 
         logStep();

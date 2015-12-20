@@ -10,6 +10,9 @@ import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 import webdriver.BaseTest;
 
+/**
+ * Тест сортировки наград по популярности
+ */
 public class ParamReviewsPopularsTest extends BaseTest {
     String subLink;
     String combinedLink;

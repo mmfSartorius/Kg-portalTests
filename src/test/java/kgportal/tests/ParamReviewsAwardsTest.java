@@ -11,6 +11,9 @@ import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 import webdriver.BaseTest;
 
+/**
+ * Тест сортировки рецензий по медалям
+ */
 public class ParamReviewsAwardsTest extends BaseTest {
     String subLink;
     String combinedLink;
