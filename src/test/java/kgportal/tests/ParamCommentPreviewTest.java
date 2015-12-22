@@ -12,7 +12,7 @@ import webdriver.BaseTest;
 /**
  * Тест предпросмотра комментария
  */
-public class ParamComentPreviewTest extends BaseTest {
+public class ParamCommentPreviewTest extends BaseTest {
     private String login;
     private String password;
     private String text;

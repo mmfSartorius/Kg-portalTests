@@ -93,10 +93,12 @@ public abstract class BaseElement extends BaseEntity {
         }
     }
 
-    public static List<Label> findBaseElements(String listingItemXpath, String subListingElementXpath, int numberOfElements, String subListingElementForNameXpath) {
+    public static List<Label> findBaseElements(String listingItemXpath, String subListingElementXpath
+            , int numberOfElements, String subListingElementForNameXpath) {
         List<Label> baseElementList = new ArrayList<>();
         for (int i = 1; i <= numberOfElements; i++) {
-            Label elementWithText = new Label(By.xpath(String.format("%1$s[%2$s]%3$s", listingItemXpath, i, subListingElementForNameXpath)), "Label for name");
+            Label elementWithText = new Label(By.xpath(String.format("%1$s[%2$s]%3$s", listingItemXpath, i
+                    , subListingElementForNameXpath)), "Label for name");
             String name;
             if (elementWithText.isPresent()) {
                 name = elementWithText.getText();
@@ -112,10 +114,12 @@ public abstract class BaseElement extends BaseEntity {
         return baseElementList;
     }
 
-    public static List<Label> findBaseElements(String listingItemXpath, String subListingElementXpath, int numberOfElements) {
+    public static List<Label> findBaseElements(String listingItemXpath, String subListingElementXpath
+            , int numberOfElements) {
         List<Label> baseElementList = new ArrayList<>();
         for (int i = 1; i <= numberOfElements; i++) {
-            Label temp = new Label(By.xpath(String.format("%1$s[%2$s]%3$s", listingItemXpath, numberOfElements, subListingElementXpath))
+            Label temp = new Label(By.xpath(String.format("%1$s[%2$s]%3$s", listingItemXpath, numberOfElements
+                    , subListingElementXpath))
                     , "Item " + Integer.toString(i));
             if (temp.isPresent()) {
                 baseElementList.add(temp);
@@ -273,7 +277,8 @@ public abstract class BaseElement extends BaseEntity {
         do {
             currentTime = System.currentTimeMillis();
             action.moveToElement(this.getElement(), 1, 1).perform();
-            action.moveToElement(this.getElement(), this.getElement().getSize().getWidth() - 1, this.getElement().getSize().getHeight() - 1).perform();
+            action.moveToElement(this.getElement(), this.getElement().getSize().getWidth() - 1
+                    , this.getElement().getSize().getHeight() - 1).perform();
         }
         while (!subElement.isPresentWithoutLog() && currentTime - time < 10000);
         Assert.assertTrue(currentTime - time < 10000);

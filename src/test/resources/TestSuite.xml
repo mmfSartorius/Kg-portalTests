@@ -6,6 +6,7 @@
             <class name="kgportal.tests.ParamReviewsAwardsTest"/>
         </classes>
         <parameter name="numberOfElements" value="30"/>
+
     </test>
     <test name="Kg-portal Review Populars Test" preserve-order="true">
         <classes>
@@ -23,7 +24,7 @@
     </test>
     <test name="Kg-portal Comment Preview Test" preserve-order="true">
         <classes>
-            <class name="kgportal.tests.ParamComentPreviewTest"/>
+            <class name="kgportal.tests.ParamCommentPreviewTest"/>
         </classes>
         <parameter name="login" value="Кто-то"/>
         <parameter name="password" value="ghjuhfvvf"/>
